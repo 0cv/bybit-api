@@ -7,14 +7,15 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/chuckpreslar/emission"
-	"github.com/frankrap/bybit-api/recws"
-	"github.com/gorilla/websocket"
-	"github.com/tidwall/gjson"
 	"log"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/chuckpreslar/emission"
+	"github.com/frankrap/bybit-api/recws"
+	"github.com/gorilla/websocket"
+	"github.com/tidwall/gjson"
 )
 
 const (
@@ -51,6 +52,9 @@ const (
 var (
 	topicOrderBook25l1prefix = WSOrderBook25L1 + "."
 )
+
+// ErrHandler handles errors
+type ErrHandler func(err error)
 
 type Configuration struct {
 	Addr          string `json:"addr"`
@@ -154,7 +158,7 @@ func (b *ByBitWS) Send(msg string) (err error) {
 	return
 }
 
-func (b *ByBitWS) Start() error {
+func (b *ByBitWS) Start(errHandler ErrHandler) error {
 	b.connect()
 
 	cancel := make(chan struct{})
@@ -180,6 +184,9 @@ func (b *ByBitWS) Start() error {
 			if err != nil {
 				log.Printf("Read error: %v", err)
 				time.Sleep(100 * time.Millisecond)
+
+				go errHandler(err)
+
 				return
 			}
 
