@@ -254,7 +254,7 @@ type Position struct {
 	WalletBalance       float64   `json:"wallet_balance,string"`
 	CumRealisedPnl      float64   `json:"cum_realised_pnl,string"`
 	CumCommission       float64   `json:"cum_commission,string"`
-	RealisedPnl         float64   `json:"realised_pnl"`
+	RealisedPnl         string    `json:"realised_pnl"`
 	DeleverageIndicator float64   `json:"deleverage_indicator"`
 	OcCalcData          string    `json:"oc_calc_data"`
 	CrossSeq            float64   `json:"cross_seq"`
