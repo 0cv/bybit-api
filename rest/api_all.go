@@ -81,7 +81,7 @@ func (b *ByBit) GetPosition(symbol string) (query string, resp []byte, result Po
 }
 
 // SetLeverage
-func (b *ByBit) SetLeverage(leverage int, symbol string) (query string, resp []byte, err error) {
+func (b *ByBit) SetLeverage(leverage float64, symbol string) (query string, resp []byte, err error) {
 	var r BaseResult
 	params := map[string]interface{}{}
 	params["symbol"] = symbol
