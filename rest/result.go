@@ -241,8 +241,11 @@ type Position struct {
 	LiqPrice            float64   `json:"liq_price,string"`
 	BustPrice           float64   `json:"bust_price,string"`
 	TakeProfit          float64   `json:"take_profit,string"`
+	TpTriggerBy         string    `json:"tp_trigger_by,string"`
 	StopLoss            float64   `json:"stop_loss,string"`
+	SlTriggerBy         string    `json:"sl_trigger_by,string"`
 	TrailingStop        float64   `json:"trailing_stop,string"`
+	TrailingActive      float64   `json:"trailing_active,string"`
 	PositionValue       float64   `json:"position_value,string"`
 	Leverage            float64   `json:"leverage,string"`
 	PositionStatus      string    `json:"position_status"`
