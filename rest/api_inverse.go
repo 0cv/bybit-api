@@ -152,10 +152,16 @@ func (b *ByBit) CreateOrder(side string, orderType string, price float64,
 }
 
 // ReplaceOrder
-func (b *ByBit) ReplaceOrder(symbol string, orderID string, qty int, price float64) (query string, resp []byte, result Order, err error) {
+func (b *ByBit) ReplaceOrder(symbol string, orderID, orderLinkID string, qty int, price float64) (query string, resp []byte, result Order, err error) {
 	var cResult OrderResponse
 	params := map[string]interface{}{}
-	params["order_id"] = orderID
+	if orderID != "" {
+		params["order_id"] = orderID
+	}
+	if orderLinkID != "" {
+		params["order_link_id"] = orderLinkID
+	}
+
 	params["symbol"] = symbol
 	if qty > 0 {
 		params["p_r_qty"] = qty
@@ -176,12 +182,15 @@ func (b *ByBit) ReplaceOrder(symbol string, orderID string, qty int, price float
 }
 
 // CancelOrder
-func (b *ByBit) CancelOrder(orderID string, symbol string) (query string, resp []byte, result Order, err error) {
+func (b *ByBit) CancelOrder(orderID, orderLinkID string, symbol string) (query string, resp []byte, result Order, err error) {
 	var cResult OrderResponse
 	params := map[string]interface{}{}
 	params["symbol"] = symbol
 	if orderID != "" {
 		params["order_id"] = orderID
+	}
+	if orderLinkID != "" {
+		params["order_link_id"] = orderLinkID
 	}
 	query, resp, err = b.SignedRequest(http.MethodPost, "v2/private/order/cancel", params, &cResult)
 	if err != nil {
