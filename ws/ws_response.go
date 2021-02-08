@@ -112,7 +112,9 @@ type Position struct {
 	PositionMargin   float64 `json:"position_margin,string"`
 	AvailableBalance float64 `json:"available_balance,string"`
 	TakeProfit       float64 `json:"take_profit,string"`
+	TpTriggerBy      string  `json:"tp_trigger_by,string"`
 	StopLoss         float64 `json:"stop_loss,string"`
+	SlTriggerBy      string  `json:"sl_trigger_by,string"`
 	RealisedPnl      float64 `json:"realised_pnl,string"`
 	TrailingStop     float64 `json:"trailing_stop,string"`
 	TrailingActive   float64 `json:"trailing_active,string"`
