@@ -301,6 +301,58 @@ func (b *ByBit) CreateStopOrder(side string, orderType string, price float64, ba
 	return
 }
 
+// Change Position Margin
+func (b *ByBit) ChangePositionMargin(symbol string, margin string) (query string, resp []byte, result BaseResult, err error) {
+	params := map[string]interface{}{}
+	params["symbol"] = symbol
+	params["margin"] = margin
+	query, resp, err = b.SignedRequest(http.MethodPost, "v2/private/position/change-position-margin", params, &result)
+	if err != nil {
+		return
+	}
+	if result.RetCode != 0 {
+		err = fmt.Errorf("%v body: [%v]", result.RetMsg, string(resp))
+		return
+	}
+	return
+}
+
+// Change Position Margin
+func (b *ByBit) SetTradingStop(symbol string, takeProfit, stopLoss, trailingStop float64, tpTriggerBy, slTriggerBy string, newTrailingActive float64) (query string, resp []byte, result TradingStop, err error) {
+	var cResult TradingStopResponse
+	params := map[string]interface{}{}
+	params["symbol"] = symbol
+	if takeProfit > 0 {
+		params["take_profit"] = takeProfit
+	}
+	if stopLoss > 0 {
+		params["stop_loss"] = stopLoss
+	}
+	if trailingStop > 0 {
+		params["trailing_stop"] = trailingStop
+	}
+	if tpTriggerBy != "" {
+		params["tp_trigger_by"] = tpTriggerBy
+	}
+	if slTriggerBy != "" {
+		params["sl_trigger_by"] = slTriggerBy
+	}
+	if newTrailingActive > 0 {
+		params["new_trailing_active"] = newTrailingActive
+	}
+
+	query, resp, err = b.SignedRequest(http.MethodPost, "v2/private/position/trading-stop", params, &result)
+	if err != nil {
+		return
+	}
+	if cResult.RetCode != 0 {
+		err = fmt.Errorf("%v body: [%v]", cResult.RetMsg, string(resp))
+		return
+	}
+	result = cResult.Result
+	return
+}
+
 // ReplaceStopOrder
 func (b *ByBit) ReplaceStopOrder(symbol string, orderID string, qty int, price float64, triggerPrice float64) (query string, resp []byte, result StopOrder, err error) {
 	var cResult StopOrderResponse
