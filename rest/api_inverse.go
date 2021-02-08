@@ -322,23 +322,15 @@ func (b *ByBit) SetTradingStop(symbol string, takeProfit, stopLoss, trailingStop
 	var cResult TradingStopResponse
 	params := map[string]interface{}{}
 	params["symbol"] = symbol
-	if takeProfit > 0 {
-		params["take_profit"] = takeProfit
-	}
-	if stopLoss > 0 {
-		params["stop_loss"] = stopLoss
-	}
-	if trailingStop > 0 {
-		params["trailing_stop"] = trailingStop
-	}
+	params["take_profit"] = takeProfit
+	params["stop_loss"] = stopLoss
+	params["trailing_stop"] = trailingStop
+	params["new_trailing_active"] = newTrailingActive
 	if tpTriggerBy != "" {
 		params["tp_trigger_by"] = tpTriggerBy
 	}
 	if slTriggerBy != "" {
 		params["sl_trigger_by"] = slTriggerBy
-	}
-	if newTrailingActive > 0 {
-		params["new_trailing_active"] = newTrailingActive
 	}
 
 	query, resp, err = b.SignedRequest(http.MethodPost, "v2/private/position/trading-stop", params, &result)
